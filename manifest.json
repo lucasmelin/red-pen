@@ -1,0 +1,10 @@
+{
+	"id": "obsidian-retext",
+	"name": "Obsidian Retext",
+	"version": "0.0.1",
+	"minAppVersion": "0.15.0",
+	"description": "This is a Retext plugin for Obsidian.",
+	"author": "Lucas Melin",
+	"authorUrl": "https://lucasmelin.com",
+	"isDesktopOnly": false
+}
