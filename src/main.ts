@@ -74,7 +74,7 @@ function highlight_field(settings: ObsidianRetextSettings) {
         const end = msg.position?.end.offset;
         decoration.push(
           Decoration.mark({
-            class: "retext-mark",
+            class: pluginClass(msg.source),
           }).range(start, end)
         );
       }
@@ -87,11 +87,38 @@ function highlight_field(settings: ObsidianRetextSettings) {
   });
 }
 
+function pluginClass(name: string | null): string {
+  switch (name) {
+    case "retext-intensify":
+      return "retext-mark-intensify";
+    case "retext-passive":
+      return "retext-mark-passive";
+    case "retext-readability":
+      return "retext-mark-readability";
+    case "retext-simplify":
+      return "retext-mark-simplify";
+    default:
+      return "";
+  }
+}
+
 const highlight_theme = EditorView.theme(
   {
-    [".retext-mark"]: {
-      // Bright green
-      backgroundColor: "#0cf032",
+    [".retext-mark-intensify"]: {
+      // Green
+      backgroundColor: "#BBFABBA6",
+    },
+    [".retext-mark-passive"]: {
+      // Blue
+      backgroundColor: "#ADCCFFA6",
+    },
+    [".retext-mark-readibility"]: {
+      // Orange
+      backgroundColor: "#FFB86CA6",
+    },
+    [".retext-mark-simplify"]: {
+      // Pink
+      backgroundColor: "#FFB8EBA6",
     },
   },
   { dark: false }
