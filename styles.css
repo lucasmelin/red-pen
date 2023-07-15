@@ -1,8 +1,12 @@
-/*
-
-This CSS file will be included with your plugin, and
-available in the app when your plugin is enabled.
-
-If your plugin does not need CSS, delete this file.
-
-*/
+.retext-mark-intensify {
+    background-color: #BBFABBA6
+}
+.retext-mark-passive {
+    background-color: #ADCCFFA6
+  }
+.retext-mark-readability{
+    background-color: #FFB86CA6
+  }
+.retext-mark-simplify {
+    background-color: #FFB8EBA6
+  }

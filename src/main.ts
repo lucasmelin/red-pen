@@ -1,4 +1,4 @@
-import { Plugin } from "obsidian";
+import { App, Plugin, PluginSettingTab, Setting } from "obsidian";
 import { EditorView, Decoration, DecorationSet } from "@codemirror/view";
 import { EditorState, StateField } from "@codemirror/state";
 import { unified } from "unified";
@@ -12,11 +12,21 @@ import retextEnglish from "retext-english";
 import retextStringify from "retext-stringify";
 
 interface ObsidianRetextSettings {
+  defaultVisibility: "show" | "hide";
   readingAge: number;
+  checkIntensify: boolean;
+  checkReadability: boolean;
+  checkPassive: boolean;
+  checkSimplify: boolean;
 }
 
 const DEFAULT_SETTINGS: ObsidianRetextSettings = {
+  defaultVisibility: "show",
   readingAge: 12,
+  checkIntensify: true,
+  checkReadability: true,
+  checkPassive: true,
+  checkSimplify: true,
 };
 
 export default class ObsidianRetextPlugin extends Plugin {
@@ -25,10 +35,20 @@ export default class ObsidianRetextPlugin extends Plugin {
   async onload() {
     await this.loadSettings();
     console.log("Loaded Obsidian Retext");
-    this.registerEditorExtension([
-      highlight_field(this.settings),
-      highlight_theme,
-    ]);
+    this.registerEditorExtension([highlight_field(this.settings)]);
+    this.addSettingTab(new ObsidianRetextSettingsTab(this.app, this));
+    if (this.settings.defaultVisibility === "show") {
+      document.body.addClass("show-retext");
+    }
+    this.addCommand({
+      id: "toggle-retext-highlights",
+      name: "Toggle Retext Highlights",
+      callback: () => {
+        document.body.hasClass("show-retext")
+          ? document.body.removeClass("show-retext")
+          : document.body.addClass("show-retext");
+      },
+    });
   }
 
   onunload() {
@@ -102,24 +122,60 @@ function pluginClass(name: string | null): string {
   }
 }
 
-const highlight_theme = EditorView.theme(
-  {
-    [".retext-mark-intensify"]: {
-      // Green
-      backgroundColor: "#BBFABBA6",
-    },
-    [".retext-mark-passive"]: {
-      // Blue
-      backgroundColor: "#ADCCFFA6",
-    },
-    [".retext-mark-readibility"]: {
-      // Orange
-      backgroundColor: "#FFB86CA6",
-    },
-    [".retext-mark-simplify"]: {
-      // Pink
-      backgroundColor: "#FFB8EBA6",
-    },
-  },
-  { dark: false }
-);
+class ObsidianRetextSettingsTab extends PluginSettingTab {
+  plugin: ObsidianRetextPlugin;
+  constructor(app: App, plugin: ObsidianRetextPlugin) {
+    super(app, plugin);
+    this.plugin = plugin;
+  }
+  display() {
+    const { containerEl } = this;
+    containerEl.empty();
+    new Setting(containerEl)
+      .setName("Show Highlights")
+      .setDesc("Show retext highlights")
+      .addDropdown((c) => {
+        c.addOption("show", "Show");
+        c.addOption("hide", "Hide");
+        c.setValue(this.plugin.settings.defaultVisibility).onChange(
+          async (value: "show" | "hide") => {
+            this.plugin.settings.defaultVisibility = value;
+            await this.plugin.saveSettings();
+          }
+        );
+      });
+    new Setting(containerEl)
+      .setName("Check Intensify")
+      .setDesc("Highlight weak or passive writing")
+      .addToggle((c) => {
+        c.setValue(this.plugin.settings.checkIntensify).onChange(
+          async (value) => {
+            this.plugin.settings.checkIntensify = value;
+            await this.plugin.saveSettings();
+          }
+        );
+      });
+    new Setting(containerEl)
+      .setName("Check Passive")
+      .setDesc("Highlight use of passive voice")
+      .addToggle((c) => {
+        c.setValue(this.plugin.settings.checkPassive).onChange(
+          async (value) => {
+            this.plugin.settings.checkPassive = value;
+            await this.plugin.saveSettings();
+          }
+        );
+      });
+    new Setting(containerEl)
+      .setName("Check Simplify")
+      .setDesc("Highlight words that could be simplified")
+      .addToggle((c) => {
+        c.setValue(this.plugin.settings.checkSimplify).onChange(
+          async (value) => {
+            this.plugin.settings.checkSimplify = value;
+            await this.plugin.saveSettings();
+          }
+        );
+      });
+  }
+}
