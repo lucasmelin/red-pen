@@ -1,12 +1,12 @@
-.retext-mark-intensify {
-    background-color: #BBFABBA6
+.show-retext .retext-mark-intensify {
+  background-color: #bbfabba6;
 }
-.retext-mark-passive {
-    background-color: #ADCCFFA6
-  }
-.retext-mark-readability{
-    background-color: #FFB86CA6
-  }
-.retext-mark-simplify {
-    background-color: #FFB8EBA6
-  }
+.show-retext .retext-mark-passive {
+  background-color: #adccffa6;
+}
+.show-retext .retext-mark-readability {
+  background-color: #ffb86ca6;
+}
+.show-retext .retext-mark-simplify {
+  background-color: #ffb8eba6;
+}
