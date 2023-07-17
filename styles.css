@@ -1,12 +1,36 @@
 .show-red-pen .red-pen-mark-intensify {
-  background-color: #bbfabba6;
+  border-radius: 0;
+  padding-bottom: 2px;
+  background-image: linear-gradient(
+    0deg,
+    rgba(187, 250, 187, 0.65) 20%,
+    rgba(0, 0, 0, 0) 20%
+  );
 }
 .show-red-pen .red-pen-mark-passive {
-  background-color: #adccffa6;
+  border-radius: 0;
+  padding-bottom: 2px;
+  background-image: linear-gradient(
+    0deg,
+    rgba(173, 204, 255, 0.65) 20%,
+    rgba(0, 0, 0, 0) 20%
+  );
 }
 .show-red-pen .red-pen-mark-readability {
-  background-color: #ffb86ca6;
+  border-radius: 0;
+  padding-bottom: 2px;
+  background-image: linear-gradient(
+    0deg,
+    rgba(255, 184, 108, 0.65) 20%,
+    rgba(0, 0, 0, 0) 20%
+  );
 }
 .show-red-pen .red-pen-mark-simplify {
-  background-color: #ffb8eba6;
+  border-radius: 0;
+  padding-bottom: 2px;
+  background-image: linear-gradient(
+    0deg,
+    rgba(255, 184, 235, 0.65) 20%,
+    rgba(0, 0, 0, 0) 20%
+  );
 }
