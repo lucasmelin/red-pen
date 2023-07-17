@@ -10,43 +10,42 @@ import retextSyntaxMentions from "retext-syntax-mentions";
 import retextSyntaxUrls from "retext-syntax-urls";
 import retextEnglish from "retext-english";
 import retextStringify from "retext-stringify";
-import { ObsidianRetextSettingsTab } from "src/settings/settingsTab";
+import { RedPenSettingsTab } from "src/settings/settingsTab";
+import { RedPenSettings, DEFAULT_SETTINGS } from "src/settings/settingsData";
 import {
-  ObsidianRetextSettings,
-  DEFAULT_SETTINGS,
-} from "src/settings/settingsData";
-import {
-  RetextSummary,
-  RetextSummaryView,
+  RedPenSummary,
+  RedPenSummaryView,
   populateSummary,
 } from "src/views/summaryView";
 
-export default class ObsidianRetextPlugin extends Plugin {
+export default class RedPenPlugin extends Plugin {
   manifest: PluginManifest;
-  settings: ObsidianRetextSettings;
+  settings: RedPenSettings;
 
   async onload(): Promise<void> {
     await this.loadSettings();
-    console.log(`Obsidian Retext v${this.manifest.version} loaded`);
+    console.log(`Red Pen v${this.manifest.version} loaded`);
     this.registerEditorExtension([highlight_field(this.settings)]);
-    this.addSettingTab(new ObsidianRetextSettingsTab(this.app, this));
+    console.log(`Plugin registered`);
+    this.addSettingTab(new RedPenSettingsTab(this.app, this));
+    console.log(`Setting Tab added`);
     this.registerView(
-      "retext-summary",
-      (leaf) => new RetextSummaryView(leaf, this.settings)
+      "red-pen-summary",
+      (leaf) => new RedPenSummaryView(leaf, this.settings)
     );
     if (this.settings.defaultVisibility === "show") {
-      document.body.addClass("show-retext");
+      document.body.addClass("show-red-pen");
       this.activateView();
     }
     this.addCommand({
-      id: "toggle-retext-highlights",
-      name: "Toggle Retext Highlights",
+      id: "toggle-red-pen-highlights",
+      name: "Toggle Red Pen Highlights",
       callback: () => {
-        if (document.body.hasClass("show-retext")) {
-          document.body.removeClass("show-retext");
+        if (document.body.hasClass("show-red-pen")) {
+          document.body.removeClass("show-red-pen");
           this.deactivateView();
         } else {
-          document.body.addClass("show-retext");
+          document.body.addClass("show-red-pen");
           this.activateView();
         }
       },
@@ -54,8 +53,8 @@ export default class ObsidianRetextPlugin extends Plugin {
   }
 
   onunload(): void {
-    console.log(`Obsidian Retext unloaded`);
-    this.app.workspace.detachLeavesOfType("retext-summary");
+    console.log(`Red Pen unloaded`);
+    this.app.workspace.detachLeavesOfType("red-pen-summary");
   }
 
   async loadSettings(): Promise<void> {
@@ -67,26 +66,24 @@ export default class ObsidianRetextPlugin extends Plugin {
   }
 
   async activateView(): Promise<void> {
-    this.app.workspace.detachLeavesOfType("retext-summary");
+    this.app.workspace.detachLeavesOfType("red-pen-summary");
 
     await this.app.workspace.getRightLeaf(false).setViewState({
-      type: "retext-summary",
+      type: "red-pen-summary",
       active: true,
     });
 
     this.app.workspace.revealLeaf(
-      this.app.workspace.getLeavesOfType("retext-summary")[0]
+      this.app.workspace.getLeavesOfType("red-pen-summary")[0]
     );
   }
 
   async deactivateView(): Promise<void> {
-    this.app.workspace.detachLeavesOfType("retext-summary");
+    this.app.workspace.detachLeavesOfType("red-pen-summary");
   }
 }
 
-function highlight_field(
-  settings: ObsidianRetextSettings
-): StateField<DecorationSet> {
+function highlight_field(settings: RedPenSettings): StateField<DecorationSet> {
   return StateField.define<DecorationSet>({
     create(state: EditorState) {
       return Decoration.none;
@@ -100,6 +97,7 @@ function highlight_field(
       if (settings.checkReadability) {
         processor = processor.use(retextReadability, {
           age: settings.readingAge,
+          threshold: settings.algorithmThreshold,
         });
       }
 
@@ -122,7 +120,7 @@ function highlight_field(
       const updated_doc = transaction.newDoc.sliceString(0);
       const file = processor.processSync(updated_doc);
 
-      const summary: RetextSummary = {};
+      const summary: RedPenSummary = {};
       for (const msg of file.messages) {
         if (!msg.source) {
           continue;
@@ -162,13 +160,13 @@ function highlight_field(
 function pluginClass(name: string | null): string {
   switch (name) {
     case "retext-intensify":
-      return "retext-mark-intensify";
+      return "red-pen-mark-intensify";
     case "retext-passive":
-      return "retext-mark-passive";
+      return "red-pen-mark-passive";
     case "retext-readability":
-      return "retext-mark-readability";
+      return "red-pen-mark-readability";
     case "retext-simplify":
-      return "retext-mark-simplify";
+      return "red-pen-mark-simplify";
     default:
       return "";
   }

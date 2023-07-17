@@ -1,10 +1,10 @@
 import { App, PluginSettingTab, Setting } from "obsidian";
-import type ObsidianRetextPlugin from "src/plugin/main";
+import type RedPenPlugin from "src/plugin/main";
 
-export class ObsidianRetextSettingsTab extends PluginSettingTab {
-  plugin: ObsidianRetextPlugin;
+export class RedPenSettingsTab extends PluginSettingTab {
+  plugin: RedPenPlugin;
 
-  constructor(app: App, plugin: ObsidianRetextPlugin) {
+  constructor(app: App, plugin: RedPenPlugin) {
     super(app, plugin);
     this.plugin = plugin;
   }
@@ -14,7 +14,7 @@ export class ObsidianRetextSettingsTab extends PluginSettingTab {
     containerEl.empty();
     new Setting(containerEl)
       .setName("Show Highlights")
-      .setDesc("Show retext highlights")
+      .setDesc("Show Red Pen highlights.")
       .addDropdown((c) => {
         c.addOption("show", "Show")
           .addOption("hide", "Hide")
@@ -25,8 +25,8 @@ export class ObsidianRetextSettingsTab extends PluginSettingTab {
           });
       });
     new Setting(containerEl)
-      .setName("Check Intensify")
-      .setDesc("Highlight weak or passive writing")
+      .setName("Enable Intensify")
+      .setDesc("Highlight weak or passive writing.")
       .addToggle((c) => {
         c.setValue(this.plugin.settings.checkIntensify).onChange(
           async (value) => {
@@ -36,8 +36,8 @@ export class ObsidianRetextSettingsTab extends PluginSettingTab {
         );
       });
     new Setting(containerEl)
-      .setName("Check Passive")
-      .setDesc("Highlight use of passive voice")
+      .setName("Enable Passive")
+      .setDesc("Highlight use of passive voice.")
       .addToggle((c) => {
         c.setValue(this.plugin.settings.checkPassive).onChange(
           async (value) => {
@@ -47,8 +47,8 @@ export class ObsidianRetextSettingsTab extends PluginSettingTab {
         );
       });
     new Setting(containerEl)
-      .setName("Check Simplify")
-      .setDesc("Highlight words that could be simplified")
+      .setName("Enable Simplify")
+      .setDesc("Highlight words that could be simplified.")
       .addToggle((c) => {
         c.setValue(this.plugin.settings.checkSimplify).onChange(
           async (value) => {
@@ -56,6 +56,43 @@ export class ObsidianRetextSettingsTab extends PluginSettingTab {
             await this.plugin.saveSettings();
           }
         );
+      });
+    new Setting(containerEl)
+      .setName("Enable Readability")
+      .setDesc("Highlight sentences that might be hard to read ")
+      .addToggle((c) => {
+        c.setValue(this.plugin.settings.checkReadability).onChange(
+          async (value) => {
+            this.plugin.settings.checkReadability = value;
+            await this.plugin.saveSettings();
+          }
+        );
+      });
+    new Setting(containerEl)
+      .setName("Readability Reading Age")
+      .setDesc("Set the reading age when checking for readibility")
+      .addSlider((c) => {
+        c.setValue(this.plugin.settings.readingAge)
+          .setLimits(6, 18, 1)
+          .setDynamicTooltip()
+          .onChange(async (value) => {
+            this.plugin.settings.readingAge = value;
+            await this.plugin.saveSettings();
+          });
+      });
+    new Setting(containerEl)
+      .setName("Readability Algorithm Threshold")
+      .setDesc(
+        "Set the number of algorithms that need to agree that a sentence is hard to read for the target age before it is highlighted."
+      )
+      .addSlider((c) => {
+        c.setValue(this.plugin.settings.algorithmThreshold)
+          .setLimits(1, 7, 1)
+          .setDynamicTooltip()
+          .onChange(async (value) => {
+            this.plugin.settings.algorithmThreshold = value;
+            await this.plugin.saveSettings();
+          });
       });
   }
 }

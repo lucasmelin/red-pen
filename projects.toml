@@ -8,11 +8,11 @@
 # upstream dream2nix flake:
 #   nix run github:nix-community/dream2nix#detect-projects $source
 
-[obsidian-retext]
-name = "obsidian-retext"
+[red-pen]
+name = "red-pen"
 relPath = ""
 subsystem = "nodejs"
 translator = "package-lock"
 translators = [ "package-lock", "package-json",]
 
-[obsidian-retext.subsystemInfo]
+[red-pen.subsystemInfo]

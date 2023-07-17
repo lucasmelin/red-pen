@@ -1,10 +1,10 @@
 {
-	"id": "obsidian-retext",
-	"name": "Obsidian Retext",
-	"version": "0.0.1",
-	"minAppVersion": "0.15.0",
-	"description": "This is a Retext plugin for Obsidian.",
-	"author": "Lucas Melin",
-	"authorUrl": "https://lucasmelin.com",
-	"isDesktopOnly": false
+  "id": "red-pen",
+  "name": "Red Pen",
+  "version": "0.0.1",
+  "minAppVersion": "0.15.0",
+  "description": "Red Pen is a retext-based plugin that acts as a proofreader for your writing.",
+  "author": "Lucas Melin",
+  "authorUrl": "https://lucasmelin.com",
+  "isDesktopOnly": false
 }

@@ -1,12 +1,12 @@
-.show-retext .retext-mark-intensify {
+.show-red-pen .red-pen-mark-intensify {
   background-color: #bbfabba6;
 }
-.show-retext .retext-mark-passive {
+.show-red-pen .red-pen-mark-passive {
   background-color: #adccffa6;
 }
-.show-retext .retext-mark-readability {
+.show-red-pen .red-pen-mark-readability {
   background-color: #ffb86ca6;
 }
-.show-retext .retext-mark-simplify {
+.show-red-pen .red-pen-mark-simplify {
   background-color: #ffb8eba6;
 }
