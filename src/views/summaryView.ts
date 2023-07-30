@@ -20,27 +20,23 @@ export class RedPenSummaryView extends ItemView {
     const summary = sidebar.createDiv("red-pen-summary");
     if (this.settings.checkIntensify) {
       summary.createEl(
-        "p",
-        "red-pen-mark-intensify"
-      ).innerHTML = `<span id="red-pen-intensify-count">0</span> sentences that could be intensified.`;
-    }
-    if (this.settings.checkReadability) {
-      summary.createEl(
-        "p",
-        "red-pen-mark-readability"
-      ).innerHTML = `<span id="red-pen-readability-count">0</span> sentences that are difficult to read.`;
+        "p"
+      ).innerHTML = `<span class="red-pen-summary-intensify"><span id="red-pen-intensify-count">0</span> phrases that could be intensified.</span>`;
     }
     if (this.settings.checkPassive) {
       summary.createEl(
-        "p",
-        "red-pen-mark-passive"
-      ).innerHTML = `<span id="red-pen-passive-count">0</span> sentences that use passive voice.`;
+        "p"
+      ).innerHTML = `<span class="red-pen-summary-passive"><span id="red-pen-passive-count">0</span> phrases that use passive voice.</span>`;
+    }
+    if (this.settings.checkReadability) {
+      summary.createEl(
+        "p"
+      ).innerHTML = `<span class="red-pen-summary-readability"><span id="red-pen-readability-count">0</span> phrases that are difficult to read.</span>`;
     }
     if (this.settings.checkSimplify) {
       summary.createEl(
-        "p",
-        "red-pen-mark-simplify"
-      ).innerHTML = `<span id="red-pen-simplify-count">0</span> sentences that could be simplified.`;
+        "p"
+      ).innerHTML = `<span class="red-pen-summary-simplify"><span id="red-pen-simplify-count">0</span> phrases that could be simplified.</span>`;
     }
   }
 
@@ -54,21 +50,41 @@ export interface RedPenSummary {
 export function populateSummary(summary: RedPenSummary) {
   let element = document.getElementById("red-pen-intensify-count");
   if (element) {
-    element.innerText = String(summary["red-pen-intensify"]) || "0";
+    const count = summary["retext-intensify"];
+    if (count !== undefined) {
+      element.innerText = String(count);
+    } else {
+      element.innerText = "0";
+    }
   }
 
   element = document.getElementById("red-pen-readability-count");
   if (element) {
-    element.innerText = String(summary["red-pen-readability"]) || "0";
+    const count = summary["retext-readability"];
+    if (count !== undefined) {
+      element.innerText = String(count);
+    } else {
+      element.innerText = "0";
+    }
   }
 
   element = document.getElementById("red-pen-passive-count");
   if (element) {
-    element.innerText = String(summary["red-pen-passive"]) || "0";
+    const count = summary["retext-passive"];
+    if (count !== undefined) {
+      element.innerText = String(count);
+    } else {
+      element.innerText = "0";
+    }
   }
 
   element = document.getElementById("red-pen-simplify-count");
   if (element) {
-    element.innerText = String(summary["red-pen-simplify"]) || "0";
+    const count = summary["retext-simplify"];
+    if (count !== undefined) {
+      element.innerText = String(count);
+    } else {
+      element.innerText = "0";
+    }
   }
 }

@@ -13,8 +13,8 @@ export class RedPenSettingsTab extends PluginSettingTab {
     const { containerEl } = this;
     containerEl.empty();
     new Setting(containerEl)
-      .setName("Show Highlights")
-      .setDesc("Show Red Pen highlights.")
+      .setName("Show Proofreader Highlights by Default")
+      .setDesc("Show Red Pen proofreader highlights by default.")
       .addDropdown((c) => {
         c.addOption("show", "Show")
           .addOption("hide", "Hide")
@@ -22,55 +22,97 @@ export class RedPenSettingsTab extends PluginSettingTab {
           .onChange(async (value: "show" | "hide") => {
             this.plugin.settings.defaultVisibility = value;
             await this.plugin.saveSettings();
+            // Toggle the highlights immediately to respect this setting.
+            if (value) {
+              document.body.addClass("show-red-pen");
+            } else if (document.body.hasClass("show-red-pen")) {
+              document.body.removeClass("show-red-pen");
+            }
           });
       });
     new Setting(containerEl)
-      .setName("Enable Intensify")
+      .setName("Enable Intensify Highlights")
       .setDesc("Highlight weak or passive writing.")
       .addToggle((c) => {
         c.setValue(this.plugin.settings.checkIntensify).onChange(
           async (value) => {
             this.plugin.settings.checkIntensify = value;
             await this.plugin.saveSettings();
+            if (!value) {
+              const marked_words = document.querySelectorAll(
+                ".red-pen-mark-intensify"
+              );
+              marked_words.forEach((word) => {
+                // Remove class from each element.
+                word.classList.remove("red-pen-mark-intensify");
+              });
+            }
           }
         );
       });
     new Setting(containerEl)
-      .setName("Enable Passive")
+      .setName("Enable Passive Highlights")
       .setDesc("Highlight use of passive voice.")
       .addToggle((c) => {
         c.setValue(this.plugin.settings.checkPassive).onChange(
           async (value) => {
             this.plugin.settings.checkPassive = value;
             await this.plugin.saveSettings();
+            if (!value) {
+              const marked_words = document.querySelectorAll(
+                ".red-pen-mark-passive"
+              );
+              marked_words.forEach((word) => {
+                // Remove class from each element.
+                word.classList.remove("red-pen-mark-passive");
+              });
+            }
           }
         );
       });
     new Setting(containerEl)
-      .setName("Enable Simplify")
+      .setName("Enable Simplify Highlights")
       .setDesc("Highlight words that could be simplified.")
       .addToggle((c) => {
         c.setValue(this.plugin.settings.checkSimplify).onChange(
           async (value) => {
             this.plugin.settings.checkSimplify = value;
             await this.plugin.saveSettings();
+            if (!value) {
+              const marked_words = document.querySelectorAll(
+                ".red-pen-mark-simplify"
+              );
+              marked_words.forEach((word) => {
+                // Remove class from each element.
+                word.classList.remove("red-pen-mark-simplify");
+              });
+            }
           }
         );
       });
     new Setting(containerEl)
-      .setName("Enable Readability")
-      .setDesc("Highlight sentences that might be hard to read ")
+      .setName("Enable Readability Highlights")
+      .setDesc("Highlight sentences that might be hard to read.")
       .addToggle((c) => {
         c.setValue(this.plugin.settings.checkReadability).onChange(
           async (value) => {
             this.plugin.settings.checkReadability = value;
             await this.plugin.saveSettings();
+            if (!value) {
+              const marked_words = document.querySelectorAll(
+                ".red-pen-mark-readability"
+              );
+              marked_words.forEach((word) => {
+                // Remove class from each element.
+                word.classList.remove("red-pen-mark-readability");
+              });
+            }
           }
         );
       });
     new Setting(containerEl)
       .setName("Readability Reading Age")
-      .setDesc("Set the reading age when checking for readibility")
+      .setDesc("Set the reading age when checking for readability.")
       .addSlider((c) => {
         c.setValue(this.plugin.settings.readingAge)
           .setLimits(6, 18, 1)

@@ -1,6 +1,6 @@
 import { Plugin, PluginManifest } from "obsidian";
 import { EditorView, Decoration, DecorationSet } from "@codemirror/view";
-import { EditorState, StateField } from "@codemirror/state";
+import { EditorState, StateField, Transaction } from "@codemirror/state";
 import { unified } from "unified";
 import retextIntensify from "retext-intensify";
 import retextReadability from "retext-readability";
@@ -26,9 +26,7 @@ export default class RedPenPlugin extends Plugin {
     await this.loadSettings();
     console.log(`Red Pen v${this.manifest.version} loaded`);
     this.registerEditorExtension([highlight_field(this.settings)]);
-    console.log(`Plugin registered`);
     this.addSettingTab(new RedPenSettingsTab(this.app, this));
-    console.log(`Setting Tab added`);
     this.registerView(
       "red-pen-summary",
       (leaf) => new RedPenSummaryView(leaf, this.settings)
@@ -38,8 +36,8 @@ export default class RedPenPlugin extends Plugin {
       this.activateView();
     }
     this.addCommand({
-      id: "toggle-red-pen-highlights",
-      name: "Toggle Red Pen Highlights",
+      id: "toggle-highlights",
+      name: "Toggle Proofreader Highlights",
       callback: () => {
         if (document.body.hasClass("show-red-pen")) {
           document.body.removeClass("show-red-pen");
@@ -53,7 +51,6 @@ export default class RedPenPlugin extends Plugin {
   }
 
   onunload(): void {
-    console.log(`Red Pen unloaded`);
     this.app.workspace.detachLeavesOfType("red-pen-summary");
   }
 
@@ -73,9 +70,11 @@ export default class RedPenPlugin extends Plugin {
       active: true,
     });
 
-    this.app.workspace.revealLeaf(
-      this.app.workspace.getLeavesOfType("red-pen-summary")[0]
-    );
+    if (this.app.workspace.getLeavesOfType("red-pen-summary").length > 0) {
+      const summary_leaf =
+        this.app.workspace.getLeavesOfType("red-pen-summary")[0];
+      this.app.workspace.revealLeaf(summary_leaf);
+    }
   }
 
   async deactivateView(): Promise<void> {
@@ -88,7 +87,8 @@ function highlight_field(settings: RedPenSettings): StateField<DecorationSet> {
     create(state: EditorState) {
       return Decoration.none;
     },
-    update(highlights, transaction) {
+
+    update(highlights: DecorationSet, transaction: Transaction) {
       let processor = unified()
         .use(retextEnglish)
         .use(retextSyntaxMentions)
@@ -130,6 +130,8 @@ function highlight_field(settings: RedPenSettings): StateField<DecorationSet> {
         const new_class = pluginClass(msg.source);
         let skip = false;
         new_highlights.between(start, end, (start, end, value) => {
+          // Since we can't add the same highlight twice,
+          // skip any section that's already highlighted.
           if ((value as any).class === new_class) {
             skip = true;
             return false;
@@ -144,6 +146,8 @@ function highlight_field(settings: RedPenSettings): StateField<DecorationSet> {
             ],
           });
         }
+        // Count the number of highlights for each type,
+        // so that we can show the number in the summary.
         if (summary.hasOwnProperty(msg.source)) {
           summary[msg.source] += 1;
         } else {
