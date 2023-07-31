@@ -13,7 +13,7 @@ export class RedPenSettingsTab extends PluginSettingTab {
     const { containerEl } = this;
     containerEl.empty();
     new Setting(containerEl)
-      .setName("Show proofreader highlights by Default")
+      .setName("Show proofreader highlights by default")
       .setDesc(
         "Show red pen proofreader highlights by default when Obsidian is loaded."
       )
