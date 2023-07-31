@@ -1,12 +1,20 @@
 <h1 align="center">Red Pen</h1>
 
-Red Pen acts as a proofreader for your writing. It highlights phrases that could use simplifying, identifies [weasel words](https://en.wikipedia.org/wiki/Weasel_word), [hedges](https://en.wikipedia.org/wiki/Hedge_%28linguistics%29), [filler](https://en.wikipedia.org/wiki/Filler_%28linguistics%29), and many more.
+<p align="center">
+Red Pen acts as a proofreader for your writing.
+</br>
+It highlights phrases that could use simplifying, identifies <a href="https://en.wikipedia.org/wiki/Weasel_word">weasel words</a>, <a href="https://en.wikipedia.org/wiki/Hedge_%28linguistics%29">hedges</a>, <a href="https://en.wikipedia.org/wiki/Filler_%28linguistics%29">filler</a>, and many more.
+</br>
+<img src="./docs/redpenlogo.png" alt="Red Pen">
+</br>
+Red Pen is implemented as a <a href="https://github.com/retextjs/retext">retext</a>-based plugin for the <a href="https://obsidian.md">Obsidian</a> note-taking app.
+</br>
+</br>
+<a href="https://builtwithnix.org">
+<img src="https://builtwithnix.org/badge.svg" alt="built with nix">
+</a>
 
-![Red Pen](./docs/redpenlogo.png)
-
-Red Pen is implemented as a [retext](https://github.com/retextjs/retext)-based plugin for the [Obsidian](https://obsidian.md) note-taking app.
-
-[![built with nix](https://builtwithnix.org/badge.svg)](https://builtwithnix.org)
+</p>
 
 ## Development
 
