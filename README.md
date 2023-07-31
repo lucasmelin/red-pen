@@ -5,6 +5,7 @@ Red Pen acts as a proofreader for your writing.
 </br>
 It highlights phrases that could use simplifying, identifies <a href="https://en.wikipedia.org/wiki/Weasel_word">weasel words</a>, <a href="https://en.wikipedia.org/wiki/Hedge_%28linguistics%29">hedges</a>, <a href="https://en.wikipedia.org/wiki/Filler_%28linguistics%29">filler</a>, and many more.
 </br>
+</br>
 <img src="./docs/redpenlogo.png" alt="Red Pen">
 </br>
 Red Pen is implemented as a <a href="https://github.com/retextjs/retext">retext</a>-based plugin for the <a href="https://obsidian.md">Obsidian</a> note-taking app.
