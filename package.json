@@ -1,6 +1,6 @@
 {
   "name": "red-pen",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Red Pen is a retext-based plugin that acts as a proofreader for your writing.",
   "main": "main.js",
   "scripts": {

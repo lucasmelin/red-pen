@@ -1,7 +1,7 @@
 {
   "id": "red-pen",
   "name": "Red Pen",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "minAppVersion": "0.15.0",
   "description": "Red Pen acts as a proofreader for your writing.",
   "author": "Lucas Melin",
