@@ -1,5 +1,6 @@
 import { ItemView, WorkspaceLeaf } from "obsidian";
 import { RedPenSettings } from "src/settings/settingsData";
+import { text } from "stream/consumers";
 
 export class RedPenSummaryView extends ItemView {
   settings: RedPenSettings;
@@ -19,24 +20,50 @@ export class RedPenSummaryView extends ItemView {
     sidebar.createEl("h2", { text: "Red Pen Summary" });
     const summary = sidebar.createDiv("red-pen-summary");
     if (this.settings.checkIntensify) {
-      summary.createEl(
-        "p"
-      ).innerHTML = `<span class="red-pen-summary-intensify"><span id="red-pen-intensify-count">0</span> phrases that could be intensified.</span>`;
+      const intensify_text = summary.createEl("p").createSpan({
+        cls: "red-pen-summary-intensify",
+      });
+      intensify_text.createSpan({
+        attr: { id: "red-pen-intensify-count" },
+        text: "0",
+      });
+      intensify_text.createSpan({
+        text: " phrases that could be intensified.",
+      });
     }
     if (this.settings.checkPassive) {
-      summary.createEl(
-        "p"
-      ).innerHTML = `<span class="red-pen-summary-passive"><span id="red-pen-passive-count">0</span> phrases that use passive voice.</span>`;
+      const passive_text = summary.createEl("p").createSpan({
+        cls: "red-pen-summary-passive",
+      });
+      passive_text.createSpan({
+        attr: { id: "red-pen-passive-count" },
+        text: "0",
+      });
+      passive_text.createSpan({ text: " phrases that use passive voice." });
     }
     if (this.settings.checkReadability) {
-      summary.createEl(
-        "p"
-      ).innerHTML = `<span class="red-pen-summary-readability"><span id="red-pen-readability-count">0</span> phrases that are difficult to read.</span>`;
+      const readability_text = summary.createEl("p").createSpan({
+        cls: "red-pen-summary-readability",
+      });
+      readability_text.createSpan({
+        attr: { id: "red-pen-readability-count" },
+        text: "0",
+      });
+      readability_text.createSpan({
+        text: " phrases that are difficult to read.",
+      });
     }
     if (this.settings.checkSimplify) {
-      summary.createEl(
-        "p"
-      ).innerHTML = `<span class="red-pen-summary-simplify"><span id="red-pen-simplify-count">0</span> phrases that could be simplified.</span>`;
+      const simplify_text = summary.createEl("p").createSpan({
+        cls: "red-pen-summary-simplify",
+      });
+      simplify_text.createSpan({
+        attr: { id: "red-pen-simplify-count" },
+        text: "0",
+      });
+      simplify_text.createSpan({
+        text: " phrases that could be simplified.",
+      });
     }
   }
 

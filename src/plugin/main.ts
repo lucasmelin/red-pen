@@ -50,9 +50,7 @@ export default class RedPenPlugin extends Plugin {
     });
   }
 
-  onunload(): void {
-    this.app.workspace.detachLeavesOfType("red-pen-summary");
-  }
+  onunload(): void {}
 
   async loadSettings(): Promise<void> {
     this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
